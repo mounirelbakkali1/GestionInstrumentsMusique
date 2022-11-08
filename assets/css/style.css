@@ -1,0 +1,21 @@
+:root{
+    --main-color : #30ACC8;
+    --light-color :#E0F2FF;
+    --card-color:#dcdcdc5e;
+}
+
+
+*{
+    box-sizing: border-box;
+}
+body{
+    overflow-x: hidden;
+    overflow-y:auto ;
+}
+div.collapse{
+    border-left: 1px solid white;
+}
+
+@media (max-width: 575px) {
+    #accordionSidebar{display: none}
+}
