@@ -27,6 +27,7 @@ class signupController extends SignupModel
     public function ProcessSignUp(){
         if($this->emptyInputs()==false && $this->invalidEmail()==false && $this->unmatchedpwd()==false && $this->ExistRecords()==false){
             // end process with error handling
+            header("location : ../signup.php?err=EmailalreadyExist");
         }else{
             $this->createUser($this->f_name,$this->s_name,$this->email,$this->pwd);
         }
@@ -42,7 +43,7 @@ class signupController extends SignupModel
     }
     public function invalidEmail(){
         $check;
-        if(filter_var($this->email,FILTER_VALIDATE_EMAIL)){
+        if(!filter_var($this->email,FILTER_VALIDATE_EMAIL)){
             $check=false;
         }else{
             $check =true ;

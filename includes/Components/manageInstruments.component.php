@@ -1,32 +1,38 @@
-<div class="container">
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-        </tr>
-        </tbody>
-    </table>
+<?php
+include_once('./classes/Instrument.class.php');
+$initInstrument = new Instrument();
+$intruments= $initInstrument->getInstruments();
+?>
+<div class="">
+    <div class="d-flex p-3 bg-light justify-content-between">
+        <h3>Manage Instruments</h3>
+        <div>
+            <button class="btn btn-outline-secondary">Add stock</button>
+            <button class="btn btn-outline-success">Add instrument</button>
+        </div>
+    </div>
+
+    <?php foreach ($intruments as $inst) {
+        echo "
+        <div class='container-fluid d-flex mt-2 p-3 text-light' style='background-color: var(--main-color)'>
+        <div class='p-2' style='width: 15%'>
+        <img src='./includes/InstrumentsImages/default.png' alt='instrument image' style='width: 100%'>
+        </div>
+        <div class='p-2' >
+            <h5>".$inst['Name']."</h5>
+            <h6>".$inst['Quantity']."</h6>
+            <p>".$inst['Description']."</p>
+        </div>
+        <div class='text-center' style='width: 15%'>
+            <h6>Price</h6>
+            <h6>".$inst['Price']." $</h6>
+        </div>
+        <div class='text-center' style='width: 15%'>
+            <button class='btn btn-outline-light mb-1'><i class='fa-regular fa-pen-to-square'></i></button>
+            <button class='btn btn-outline-light'><i class='fa-solid fa-trash-can'></i></button>
+        </div>
+    </div>
+        ";
+    }?>
+
 </div>

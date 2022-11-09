@@ -1,7 +1,10 @@
 <?php
 session_start();
-if(!isset($_SESSION['username'])) {
+if(!isset($_SESSION['userInfo'])) {
     echo "<script>window.location.replace('signup.php')</script>";
+}else{
+    $_SESSION['username']=$_SESSION['userInfo']['First_Name']." ".$_SESSION['userInfo']['Second_Name'];
+    $_SESSION['status']=$_SESSION['userInfo']['Role_ID'];
 }
 
 ?>
@@ -47,28 +50,33 @@ if(!isset($_SESSION['username'])) {
             </a>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="py-2 collapse-inner rounded"  style="background-color: var(--main-color)">
-                    <a class="collapse-item text-light font-weight-bold" href="index.php?page=manageInstruments">Manage Instruments</a>
+                    <a class="collapse-item text-light font-weight-bold" href="index.php?page=manageInstruments"><?php if($_SESSION['status']==2) echo "Manage";else echo "View" ?> Instruments</a>
                     <a class="collapse-item text-light font-weight-bold" href="index.php?page=statistics">Statistics</a>
                     <a class="collapse-item text-light font-weight-bold" href="index.php?page=addStock">Add Stock</a>
                 </div>
             </div>
         </li>
 
-        <!-- Nav Item - Utilities Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-               aria-expanded="true" aria-controls="collapseUtilities">
-                <i class="fas fa-fw fa-user"></i>
+        <?php if($_SESSION['status']==2)
+
+            echo "
+            <li class='nav-item'>
+            <a class='nav-link collapsed' href='#' data-toggle='collapse' data-target='#collapseUtilities'
+               aria-expanded='true' aria-controls='collapseUtilities'>
+                <i class='fas fa-fw fa-user'></i>
                 <span>Users</span>
             </a>
-            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                 data-parent="#accordionSidebar">
-                <div class="py-2 collapse-inner rounded" style="background-color: var(--main-color)">
-                    <a class="collapse-item text-light font-weight-bold" href="index.php?page=addUser">Add User</a>
-                    <a class="collapse-item text-light font-weight-bold" href="index.php?page=manageStatus">Manage Users Status</a>
+            <div id='collapseUtilities' class='collapse' aria-labelledby='headingUtilities'
+                 data-parent=''#accordionSidebar'>
+                <div class='py-2 collapse-inner rounded' style='background-color: var(--main-color)'>
+                    <a class='collapse-item text-light font-weight-bold' href='index.php?page=manageStatus'>Manage Users Status</a>
                 </div>
             </div>
-        </li>
+        </li>"
+            
+            ?>
+        <!-- Nav Item - Utilities Collapse Menu -->
+        
 
         <!-- Divider -->
         <hr class="sidebar-divider">
@@ -176,13 +184,13 @@ if(!isset($_SESSION['username'])) {
                            Profile
                        </a>
                        <div class="dropdown-divider"></div>
-                       <a class="dropdown-item" href="logout.php" data-toggle="modal" data-target="#logoutModal">
+                       <a class="dropdown-item" href="./logout.php" style="cursor:pointer;">
                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                            Logout
                        </a>
                    </div>
                </li>
-               <?php if(isset($_SESSION['username'])) echo "<li class='nav-item dropdown no-arrow'><a class='nav-link text-dark'><span style='border: 1px solid black;border-radius: 50px;padding: 2px 20px'>Log Out</span></a></li>
+               <?php if(isset($_SESSION['username'])) echo "<li class='nav-item dropdown no-arrow'><a class='nav-link text-dark' href='./logout.php'><span style='border: 1px solid black;border-radius: 50px;padding: 2px 20px;cursor: pointer'>Log Out</span></a></li>
             "?>
            </ul>
 
@@ -201,8 +209,6 @@ if(!isset($_SESSION['username'])) {
                 $page = $_GET['page'];
                 if($page=="statistics"){
                     include_once('./includes/Components/statistics.component.php');
-                }elseif ($page=="addUser"){
-                    include_once('./includes/Components/addUSer.component.php');
                 }elseif ($page=="manageInstruments"){
                     include_once('./includes/Components/manageInstruments.component.php');
                 }elseif ($page=="manageStatus"){

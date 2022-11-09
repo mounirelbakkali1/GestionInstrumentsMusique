@@ -1,21 +1,24 @@
 <?php
-session_start();
 if(isset($_POST['submit'])){
     // getting data
     $email = $_POST['email'];
     $password = $_POST['pwd'];
 
-    echo "hello";
+    //echo "hello";
     // instatiate user class
     include '../classes/LoginController.php';
     $userInfo = new LoginController($email,$password);
+    //echo $_SESSION['username'];
 
+    //echo $userInfo->getInfo();
     // process Login
     $userInfo->ProcessLogin();
 
-    echo $_SESSION['username'];
+
     // redirecting
-    //header('location ../index.php');
+    echo "<script>window.location.replace('../index.php')</script>";
+
+    ///  header('Location ../index.php');    <--------- it doesn't work !
 
 
 

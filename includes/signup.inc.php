@@ -14,6 +14,7 @@ if(isset($_POST['submit'])){
     include '../classes/SignupController.php';
     $userInfo = new SignupController($first_name,$second_name,$email,$password,$password_confirm);
     echo $userInfo->getInfo();
+    $userInfo->getInfo();
     // Processing Regestration
     $userInfo->ProcessSignUp();
     //REDIRECTING
