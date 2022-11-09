@@ -50,6 +50,29 @@
             }?>
             <h2>Connexion</h2>
             <form action="./includes/login.inc.php" class="needs-validation" method="post" novalidate >
+                <?php
+                    if (isset($_GET['err'])){
+                        if($err=="invalidEmail"){
+                            echo "
+                            <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                              <strong>Failed !</strong>Email doen t match with our records 
+                              <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                                <span aria-hidden='true'>&times;</span>
+                              </button>
+                            </div>
+                            ";
+                        }elseif ($err=="incorrectPwd"){
+                            echo "
+                            <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                              <strong>Failed !</strong> Incorrect Password 
+                              <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                                <span aria-hidden='true'>&times;</span>
+                              </button>
+                            </div>
+                            ";
+                        }
+                    }
+                ?>
                 <label for="validationCustomUsername" class="form-label">Email</label>
                 <div class="input-group has-validation">
                     <span class="input-group-text rounded-0 bg-transparent text-light border-right-0" id="inputGroupPrepend">@</span>
@@ -64,7 +87,7 @@
                     Please enter you password.
                 </div>
                 <div class="form-check mt-3">
-                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck" >
+                    <input class="form-check-input" type="checkbox" value="yes" name="keep_me_connected" id="invalidCheck" >
                     <label class="form-check-label mb-3" for="invalidCheck">
                         Keep me connected
                     </label>

@@ -8,7 +8,10 @@ $intruments= $initInstrument->getInstruments();
         <h3>Manage Instruments</h3>
         <div>
             <button class="btn btn-outline-secondary">Add stock</button>
-            <button class="btn btn-outline-success">Add instrument</button>
+            <?php if($_SESSION['status']==2){
+                echo " <button class='btn btn-outline-success'>Add instrument</button>";
+            }?>
+
         </div>
     </div>
 
@@ -26,13 +29,19 @@ $intruments= $initInstrument->getInstruments();
         <div class='text-center' style='width: 15%'>
             <h6>Price</h6>
             <h6>".$inst['Price']." $</h6>
-        </div>
-        <div class='text-center' style='width: 15%'>
+        </div>";
+        if($_SESSION['status']==2){
+            echo "
+            <div class='text-center' style='width: 15%'>
             <button class='btn btn-outline-light mb-1'><i class='fa-regular fa-pen-to-square'></i></button>
             <button class='btn btn-outline-light'><i class='fa-solid fa-trash-can'></i></button>
-        </div>
-    </div>
-        ";
+        </div>";
+        }
+            echo "
+        
+        
+    </div>";
+
     }?>
 
 </div>

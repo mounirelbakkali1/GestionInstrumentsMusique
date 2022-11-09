@@ -78,7 +78,7 @@
                     </div>
                 </div>
                 <div class="form-check mt-3">
-                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck" name="keep_connected" required>
+                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck" name="" required>
                     <label class="form-check-label mb-3" for="invalidCheck">
                         Agree to terms and conditions
                     </label>
