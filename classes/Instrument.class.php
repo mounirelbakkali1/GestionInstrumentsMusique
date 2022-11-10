@@ -14,5 +14,28 @@ class Instrument extends DataBase
         return $rows;
 
     }
+    public function updateInstrument($column,$data,$id){
+        //  var_dump($column);
+        $sql = "UPDATE `instruments` SET $column='$data' WHERE ID=$id ";
+
+        try {
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->execute();
+        }catch (PDOException $e){
+            echo $e->getMessage();
+        }
+
+    }
+    public function getCategories(){
+        $sql ="SELECT * FROM categories ;";
+        try {
+            $statm =$this->connect()->prepare($sql);
+            $statm->execute();
+            $rstOfExecution =$statm->fetchAll();
+        }catch (PDOException $e){
+            echo $e->getMessage();
+        }
+        return $rstOfExecution;
+    }
 
 }

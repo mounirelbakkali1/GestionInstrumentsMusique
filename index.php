@@ -16,7 +16,11 @@ if(!isset($_SESSION['userInfo'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Stars</title>
+    <!--Google fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;1,500;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/sb-admin-2.min.css">
+    <!--Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
@@ -34,7 +38,7 @@ if(!isset($_SESSION['userInfo'])) {
         </li>
 
         <!-- Divider -->
-        <hr class="sidebar-divider">
+        <hr class="sidebar-divider text-light">
 
         <!-- Heading -->
         <div class="sidebar-heading">
@@ -79,7 +83,7 @@ if(!isset($_SESSION['userInfo'])) {
         
 
         <!-- Divider -->
-        <hr class="sidebar-divider">
+        <hr class="sidebar-divider text-light">
 
         <!-- Heading -->
         <div class="sidebar-heading">
@@ -87,7 +91,6 @@ if(!isset($_SESSION['userInfo'])) {
         </div>
 
         <!-- Divider -->
-        <hr class="sidebar-divider d-none d-md-block">
 
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -277,6 +280,71 @@ if(!isset($_SESSION['userInfo'])) {
             ?>
 
        </div>
+       <div class="modal fade" id="AddInstrumentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+           <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                   <div class="modal-header">
+                       <h5 class="modal-title" id="exampleModalLabel">Add Instrument</h5>
+                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                           <span aria-hidden="true">&times;</span>
+                       </button>
+                   </div>
+                   <div class="modal-body">
+                       <form action="./includes/instrumentHandler.php" method="post" enctype="multipart/form-data"> <!--we use "multipart/form-data" when form contains file input  -> application/x-www-form-urlencoded (the default)-->
+                           <div class="form-group">
+                               <label for="intrument-name" class="col-form-label">Name:</label>
+                               <input type="text" class="form-control" id="intrument-name" name="name">
+                           </div>
+                           <div class="d-flex justify-content-between">
+                               <div class="form-group">
+                                   <label for="message-text" class="col-form-label">Quantity:</label>
+                                   <input type="number" class="form-control" id="message-text" name="quantity">
+                               </div>
+                               <div class="form-group">
+                                   <label for="message-text" class="col-form-label">Price:</label>
+                                   <input type="number" step="0.01" class="form-control" id="message-text">
+                               </div>
+                           </div>
+                           <div class="d-flex justify-content-between">
+                               <div class="form-group">
+                                   <label for="category" class="col-form-label">Available:</label>
+                                   <select class="form-select" name="category" id="available">
+                                       <option value='1'>Yes</option>;
+                                       <option value='0'>No</option>;
+                                   </select>
+                               </div>
+                               <div class="form-group">
+                                   <label for="message-text" class="col-form-label">Image:</label>
+                                   <input type="file" class="form-control" id="message-text" name="image">
+                               </div>
+                           </div>
+                           <div class="form-group">
+                               <label for="category" class="col-form-label">Category:</label>
+                               <select class="form-select" name="category" id="category">
+                                   <?php
+                                   include_once ('./includes/instrumentHandler.php');
+                                   $instrumentClass = new Instrument();
+                                   $instrumentCategories=$instrumentClass->getCategories();
+                                   foreach ($instrumentCategories as $category){
+                                       echo "<option value='".$category['ID']."'>".$category['Name']."</option>";
+                                   }
+                                   ?>
+                               </select>
+                           </div>
+                           <div class="form-group">
+                               <label for="message-text" class="col-form-label">Description:</label>
+                               <textarea  class="form-control" id="message-text" name="description"></textarea>
+                           </div>
+
+                           <div class="modal-footer">
+                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                               <button type="submit" name="addInstBtnForm" class="btn btn-primary">Add</button>
+                           </div>
+                       </form>
+                   </div>
+
+               </div>
+           </div>
    </main>
 </div>
 </body>
@@ -284,4 +352,11 @@ if(!isset($_SESSION['userInfo'])) {
 <script src="./assets/js/jquery.min.js"></script>
 <script src="./assets/js/bootstrap.min.js"></script>
 <script src="./assets/js/scripts.js"></script>
+<!--DATA TABLE--->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 </html>

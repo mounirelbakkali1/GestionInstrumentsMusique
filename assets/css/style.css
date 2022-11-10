@@ -11,9 +11,21 @@
 body{
     overflow-x: hidden;
     overflow-y:auto ;
+    font-family: 'Poppins', sans-serif;
 }
 div.collapse{
     border-left: 1px solid white;
+}
+
+td{
+    color: #575656;
+    letter-spacing: 1.1px;
+}
+td:nth-last-of-type(5){
+    font-size: 12px ;
+}
+div#example_filter {
+    float: right;
 }
 
 @media (max-width: 575px) {
