@@ -21,7 +21,10 @@ td{
     color: #575656;
     letter-spacing: 1.1px;
 }
-td:nth-last-of-type(5){
+th{
+    font-size: 14px;
+}
+table#example tbody td:nth-of-type(3) {
     font-size: 12px ;
 }
 div#example_filter {

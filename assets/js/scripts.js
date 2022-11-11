@@ -1,6 +1,4 @@
-$(document).ready(function () {
-    $('#example').DataTable();
-});
+
 
 // IIFE -> Immediatly invocked function expression
 (function () {
@@ -20,6 +18,7 @@ $(document).ready(function () {
         })
 })()
 $(document).ready(()=> {
+    $('#example').DataTable();
     $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
         $("body").toggleClass("sidebar-toggled");
         $(".sidebar").toggleClass("toggled");
@@ -58,11 +57,6 @@ $(document).ready(()=> {
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    Swal.fire({
-                        title: 'Your uploaded picture',
-                        imageUrl: e.target.result,
-                        imageAlt: 'The uploaded picture'
-                    })
                     $(this).parent().find("img").attr("src",e.target.result);
                     updateDB("Images_url", e.target.result,id);
                 }
@@ -72,7 +66,6 @@ $(document).ready(()=> {
     });
     $(".availability").change(function (){
         let id = $(this).attr("id").split("_")[1];
-        console.log(id);
         if(this.checked) {
             var returnVal = confirm("Are you sure to make this instrumnet available ?");
             $(this).prop("checked", returnVal);
@@ -82,6 +75,76 @@ $(document).ready(()=> {
             $(this).prop("", returnVal);
             updateDB("Available",0,id);
         }
+    })
+    $("#addCategory").click(function (){
+        (async ()=>{
+            const { value: categoryName } = await Swal.fire({
+                title: 'Enter category name',
+                input: 'text',
+                showCancelButton: true,
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'You need to write something!'
+                    }
+                }
+            })
+            if (categoryName) {
+                $.get("./includes/instrumentHandler.php",{
+                    categoryTocheck:categoryName
+                },function (data,status){
+                    if(data.trim()=="AE") {//  A : already E : exist
+                        $("#h1").html("<div id='h1' class='alert alert-danger alert-dismissible fade show' role='alert'>\
+                            <strong>Failed </strong>Category Already Exist<button type='button' class='close' data-dismiss='alert' aria-label='Close'>\
+                            <span aria-hidden='true'>×</span>\
+                        </button>\
+                    </div>");
+                    }else{
+                        $.post("./includes/instrumentHandler.php",{
+                            categoryName:categoryName
+                        },function (data,status){
+                            $("#h1").html(data);
+                        });
+                    }
+
+                });
+
+            }
+        })()
+    })
+    $(".categoriesTd").click(function (){
+        let categories;
+        let id = $(this).attr('id').split("_")[1];
+        var Obj= new Promise(function(resolve) {
+            // get your data and pass it to resolve()
+            $.get("./includes/instrumentHandler.php",{
+                getCategories:"cate"
+            },function (data){
+               resolve(getCatObject(JSON.parse(data)));
+            });
+        });
+        (async ()=>{
+            const { value: category } = await Swal.fire({
+                title: 'Select field validation',
+                input: 'select',
+                inputOptions:Obj,
+                inputPlaceholder: 'Select a category',
+                showCancelButton: true,
+                inputValidator: (value) => {
+                    return new Promise((resolve) => {
+                        if (value !== "") {
+                            resolve()
+                        } else {
+                            resolve('You need to select a category :)')
+                        }
+                    })
+                }
+            })
+            if (category) {
+                updateDB("Category_ID",parseInt(category),id);
+            }
+        })();
+
+
     })
 
 })
@@ -94,4 +157,18 @@ function updateDB(column,data,id){
     },function (data,status){
         $("#h1").html(data);
     });
+}
+function getCatObject(arr){
+    let rst ={};
+    arr.forEach(ele=>{
+        key=ele.ID;
+        Object.assign(rst, {[key] : ele.Name});    // ECS FEATURE TO MAKE DYNAMIC KEY
+    });
+    return rst ;
+
+}
+function search(cate){
+    let searchInput = document.querySelector("input[type=search]");
+    searchInput.value=cate
+    $("input[type=search]").trigger('keyup');
 }

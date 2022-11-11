@@ -19,10 +19,10 @@ if(!isset($_SESSION['userInfo'])) {
     <!--Google fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;1,500;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/sb-admin-2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!--Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 <div id="wrapper">
@@ -201,12 +201,14 @@ if(!isset($_SESSION['userInfo'])) {
 
        <div id="ComponentContainer" class="container-fluid">
            <div class="d-flex">
+
                <div class="p-2" style="background-color: var(--light-color)">Categories</div>
-               <button class="btn btn-light rounded-0">Bois</button>
-               <button class="btn btn-light rounded-0">Claviers</button>
-               <button class="btn btn-light rounded-0">Cordes</button>
-               <button class="btn btn-light rounded-0">Cuivres</button>
-               <button class="btn btn-light rounded-0">Percussions</button>
+               <button class="btn btn-light rounded-0" onclick="search('')">All</button>
+               <button class="btn btn-light rounded-0" onclick="search('Bois')">Bois</button>
+               <button class="btn btn-light rounded-0" onclick="search('Claviers')">Claviers</button>
+               <button class="btn btn-light rounded-0" onclick="search('Cordes')">Cordes</button>
+               <button class="btn btn-light rounded-0" onclick="search('Cuivres')">Cuivres</button>
+               <button class="btn btn-light rounded-0" onclick="search('Percussions')">Percussions</button>
            </div>
             <?php if(isset($_GET['page'])){
                 $page = $_GET['page'];
@@ -289,6 +291,14 @@ if(!isset($_SESSION['userInfo'])) {
                            <span aria-hidden="true">&times;</span>
                        </button>
                    </div>
+                   <?php if(isset($_SESSION['err-uplaoding_img'])){
+                       echo "<div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                              <strong>Uploading image failed !</strong> You should check in on some of those fields below.
+                              <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                                <span aria-hidden='true'>×</span>
+                              </button>
+                            </div>";
+                   } ?>
                    <div class="modal-body">
                        <form action="./includes/instrumentHandler.php" method="post" enctype="multipart/form-data"> <!--we use "multipart/form-data" when form contains file input  -> application/x-www-form-urlencoded (the default)-->
                            <div class="form-group">
@@ -302,13 +312,13 @@ if(!isset($_SESSION['userInfo'])) {
                                </div>
                                <div class="form-group">
                                    <label for="message-text" class="col-form-label">Price:</label>
-                                   <input type="number" step="0.01" class="form-control" id="message-text">
+                                   <input type="number" step="0.01" class="form-control" name="price" id="message-text">
                                </div>
                            </div>
                            <div class="d-flex justify-content-between">
                                <div class="form-group">
                                    <label for="category" class="col-form-label">Available:</label>
-                                   <select class="form-select" name="category" id="available">
+                                   <select class="form-select" name="available" id="available">
                                        <option value='1'>Yes</option>;
                                        <option value='0'>No</option>;
                                    </select>

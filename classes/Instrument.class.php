@@ -37,5 +37,27 @@ class Instrument extends DataBase
         }
         return $rstOfExecution;
     }
+    public function setCategory($category){
+        $query = "INSERT INTO `categories`(`Name`) VALUES (?)";
+        try {
+            $stmt = $this->connect()->prepare($query);
+            $stmt->execute(array($category));
+        }catch (PDOException $e){
+            echo "Error accurated while adding category try again";
+        }
+
+    }
+    public function ExistCategory($cate){
+        $query = "SELECT * FROM categories WHERE Name=?;";
+        try {
+            $stmt = $this->connect()->prepare($query);
+            $stmt->execute(array($cate));
+            $ass= $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }catch (PDOException $e){
+            echo "Error accurated try again";
+        }
+        if(count($ass)>0) return true;
+        else return false;
+    }
 
 }
