@@ -2,6 +2,20 @@
 include_once('DataBase.class.php');
 class Instrument extends DataBase
 {
+
+    public function addIntrument($name , $price ,$quantity, $available , $image ,$desc ,$cateID ){
+        $rst ;
+        $query = "INSERT INTO `instruments`(`Name`, `Price`, `Quantity`, `Available`, `Images_url`, `Description`, `Category_ID`) VALUES (?,?,?,?,?,?,?)";
+        $stat =$this->connect()->prepare($query);
+        try {
+            $stat->execute(array($name,$price,$quantity,$available,$image,$desc,$cateID));
+            $rst = "success";
+        }catch (PDOException $e){
+            $rst = $e->getMessage();
+            echo $e->getMessage();
+        }
+        return $rst;
+    }
     public function getInstruments(){
         $query = "SELECT instruments.*,categories.Name As category FROM instruments INNER JOIN categories on instruments.Category_ID = categories.ID";
         $statement = $this->connect();
@@ -26,6 +40,16 @@ class Instrument extends DataBase
         }
 
     }
+    public function deleteInstrument($id){
+        //  var_dump($column);
+        $sql = "DELETE FROM `instruments`  WHERE ID=$id ";
+        try {
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->execute();
+        }catch (PDOException $e){
+            echo $e->getMessage();
+        }
+    }
     public function getCategories(){
         $sql ="SELECT * FROM categories ;";
         try {
@@ -48,7 +72,7 @@ class Instrument extends DataBase
 
     }
     public function ExistCategory($cate){
-        $query = "SELECT * FROM categories WHERE Name=?;";
+        $query = "SELECT LOWER(Name) AS LowercaseCategories FROM categories WHERE Name=?;";
         try {
             $stmt = $this->connect()->prepare($query);
             $stmt->execute(array($cate));

@@ -293,44 +293,45 @@ if(!isset($_SESSION['userInfo'])) {
                    </div>
                    <?php if(isset($_SESSION['err-uplaoding_img'])){
                        echo "<div class='alert alert-warning alert-dismissible fade show' role='alert'>
-                              <strong>Uploading image failed !</strong> You should check in on some of those fields below.
+                              <strong>Uploading image failed !</strong>".$_SESSION['err-uplaoding_img']."
                               <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                                 <span aria-hidden='true'>×</span>
                               </button>
                             </div>";
+                       unset($_SESSION['err-uplaoding_img']);
                    } ?>
                    <div class="modal-body">
-                       <form action="./includes/instrumentHandler.php" method="post" enctype="multipart/form-data"> <!--we use "multipart/form-data" when form contains file input  -> application/x-www-form-urlencoded (the default)-->
+                       <form action="./includes/instrumentHandler.php" class="needs-validation" method="post"  enctype="multipart/form-data" novalidate> <!--we use "multipart/form-data" when form contains file input  -> application/x-www-form-urlencoded (the default)-->
                            <div class="form-group">
                                <label for="intrument-name" class="col-form-label">Name:</label>
-                               <input type="text" class="form-control" id="intrument-name" name="name">
+                               <input type="text" class="form-control" id="intrument-name" name="name" required>
                            </div>
                            <div class="d-flex justify-content-between">
                                <div class="form-group">
                                    <label for="message-text" class="col-form-label">Quantity:</label>
-                                   <input type="number" class="form-control" id="message-text" name="quantity">
+                                   <input type="number" class="form-control" id="message-text" name="quantity" required>
                                </div>
                                <div class="form-group">
                                    <label for="message-text" class="col-form-label">Price:</label>
-                                   <input type="number" step="0.01" class="form-control" name="price" id="message-text">
+                                   <input type="number" step="0.01" class="form-control" name="price" id="message-text" required>
                                </div>
                            </div>
                            <div class="d-flex justify-content-between">
                                <div class="form-group">
                                    <label for="category" class="col-form-label">Available:</label>
-                                   <select class="form-select" name="available" id="available">
+                                   <select class="form-select" name="available" id="available" required>
                                        <option value='1'>Yes</option>;
                                        <option value='0'>No</option>;
                                    </select>
                                </div>
                                <div class="form-group">
-                                   <label for="message-text" class="col-form-label">Image:</label>
-                                   <input type="file" class="form-control" id="message-text" name="image">
+                                   <label for="message-text" class="col-form-label">Image: (optional)</label>
+                                   <input type="file" class="form-control" id="message-text" name="image" >
                                </div>
                            </div>
                            <div class="form-group">
                                <label for="category" class="col-form-label">Category:</label>
-                               <select class="form-select" name="category" id="category">
+                               <select class="form-select" name="category" id="category" required>
                                    <?php
                                    include_once ('./includes/instrumentHandler.php');
                                    $instrumentClass = new Instrument();
@@ -343,7 +344,7 @@ if(!isset($_SESSION['userInfo'])) {
                            </div>
                            <div class="form-group">
                                <label for="message-text" class="col-form-label">Description:</label>
-                               <textarea  class="form-control" id="message-text" name="description"></textarea>
+                               <textarea  class="form-control" id="message-text" name="description" required></textarea>
                            </div>
 
                            <div class="modal-footer">

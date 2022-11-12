@@ -90,20 +90,16 @@ $(document).ready(()=> {
             })
             if (categoryName) {
                 $.get("./includes/instrumentHandler.php",{
-                    categoryTocheck:categoryName
+                    categoryTocheck:categoryName.toLowerCase()
                 },function (data,status){
-                    if(data.trim()=="AE") {//  A : already E : exist
-                        $("#h1").html("<div id='h1' class='alert alert-danger alert-dismissible fade show' role='alert'>\
-                            <strong>Failed </strong>Category Already Exist<button type='button' class='close' data-dismiss='alert' aria-label='Close'>\
-                            <span aria-hidden='true'>×</span>\
-                        </button>\
-                    </div>");
-                    }else{
+                    if(data.trim()!="AE") {//  A : already E : exist
                         $.post("./includes/instrumentHandler.php",{
                             categoryName:categoryName
                         },function (data,status){
                             $("#h1").html(data);
                         });
+                    }else{
+                        window.location.replace('index.php?page=manageInstruments'); // refresh pour voir le message err
                     }
 
                 });
@@ -145,6 +141,17 @@ $(document).ready(()=> {
         })();
 
 
+    })
+    $(".delInstrBtn").click(function () {
+        let id = $(this).attr('id').split("_")[1];
+        let imgURL = $(this).parent().parent().find('td.img').find("img").attr("src")
+        $.post("./includes/instrumentHandler.php",{
+            delIntrument:"true",
+            id:id,
+            imgURL:imgURL
+        },function (data,status){
+            $("#h1").html(data);
+        });
     })
 
 })
