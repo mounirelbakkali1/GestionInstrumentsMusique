@@ -15,7 +15,9 @@
         body{
             height: 100vh;
             overflow: hidden;
-            background-image: url("./assets/img/vector-musical-seamless-background-with-different-insrtuments.jpg");
+            background-image: url("./assets/img/free-music-icons-vector.png");
+            background-repeat: no-repeat;
+            background-size: cover;
         }
         #container {
             background-color: #212531;

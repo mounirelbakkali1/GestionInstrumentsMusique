@@ -19,13 +19,6 @@
 })()
 $(document).ready(()=> {
     $('#example').DataTable();
-    $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
-        $("body").toggleClass("sidebar-toggled");
-        $(".sidebar").toggleClass("toggled");
-        if ($(".sidebar").hasClass("toggled")) {
-            $('.sidebar .collapse').collapse('hide');
-        }
-    });
     var contents;
     $('.changeable').click(function (){
        contents=$(this).html();
@@ -51,7 +44,7 @@ $(document).ready(()=> {
                 input: 'file',
                 inputAttributes: {
                     'accept': 'image/*',
-                    'aria-label': 'Upload your profile picture',
+                    'aria-label': 'Upload instrument picture',
                 }
             })
             if (file) {
@@ -153,6 +146,30 @@ $(document).ready(()=> {
             $("#h1").html(data);
         });
     })
+    $("#edit_user_img").click(function () {
+        let id = $(this).attr("idedit").split("_")[1];
+        let image_url ;
+        (async ()=>{
+            const { value: file } = await Swal.fire({
+                title: 'Select image',
+                input: 'file',
+                inputAttributes: {
+                    'accept': 'image/*',
+                    'aria-label': 'Upload your profil picture',
+                }
+            })
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    $(this).parent().find("img").attr("src",e.target.result);
+                    console.log(e.target.result);
+                    updateUserInfo("imgUrl", e.target.result,id);
+                    console.log(id)
+                }
+                reader.readAsDataURL(file)
+            }
+        })()
+    })
 
 })
 
@@ -162,6 +179,17 @@ function updateDB(column,data,id){
         data:data,
         id:id
     },function (data,status){
+        $("#h1").html(data);
+    });
+}
+function updateUserInfo(column,data,id){
+    $.post("./includes/userInfoHandler.php",{
+        column : column,
+        data:data,
+        id:id,
+        updateUserInf:"something",
+    },function (data,status){
+        console.log(data)
         $("#h1").html(data);
     });
 }

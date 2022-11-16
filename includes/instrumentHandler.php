@@ -74,14 +74,16 @@ function updateInstrument(){
 
 function deleteInstrument(){
     $id = $_POST['id'];
+    $hey;
     $imgURL = $_POST['imgURL'];
-    if (strlen($imgURL)<150){
-        unlink($imgURL);
+    $link = explode("./includes/",$imgURL)[1];
+    if (strlen($link)<150){
+        $status  = unlink($link) ? '<br>local image has been deleted as well' : '<br>(Error deleting local image)';
     }
     $instrument = new Instrument();
     $instrument->deleteInstrument($id);
-    $_SESSION['update'] = "instrument deleted succesfuly";
-    echo "<script>window.location.replace('index.php?page=manageInstruments&del=sucess')</script>";
+    $_SESSION['update'] = "instrument deleted succesfuly".$status;
+    echo "<script>window.location.replace('index.php?page=manageInstruments')</script>";
 
 }
 

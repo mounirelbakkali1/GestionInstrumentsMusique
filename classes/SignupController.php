@@ -1,6 +1,6 @@
 <?php
 include_once('SignupModel.php');
-
+session_start();
 class signupController extends SignupModel
 {
     private $f_name;
@@ -20,17 +20,25 @@ class signupController extends SignupModel
     }
 
     public function getInfo(){
-        $empty = $this->emptyInputs();
-        return "$this->s_name $this->f_name $this->email $this->pwd ----$empty";
+        $empty = $this->ExistRecords();
+        return "$this->s_name $this->f_name $this->email $this->pwd ----Exist : $empty";
     }
 
     public function ProcessSignUp(){
-        if($this->emptyInputs()==false && $this->invalidEmail()==false && $this->unmatchedpwd()==false && $this->ExistRecords()==false){
-            // end process with error handling
-            header("location : ../signup.php?err=EmailalreadyExist");
+        $check;
+        if($this->emptyInputs()==false){
+            $check=" Please fill all fields";
+        }elseif ($this->invalidEmail()==false){
+            $check=" Email format is invalid";
+        }elseif ($this->unmatchedpwd()==false){
+            $check=" Unmatch password & password confirmation";
+        }elseif ($this->ExistRecords()==false){
+            $check=" Email already Signed up try to log in instead or create new one";
         }else{
             $this->createUser($this->f_name,$this->s_name,$this->email,$this->pwd);
+            $check=true;
         }
+        return $check;
     }
     public function emptyInputs(){
         $check;
@@ -61,11 +69,12 @@ class signupController extends SignupModel
     }
     public function ExistRecords(){
         $check;
-        if($this->checkInputs($this->email,$this->pwd)){
+        if(!$this->checkInputs($this->email)){
             $check=false;
         }else{
             $check =true ;
         }
+
         return $check;
     }
 

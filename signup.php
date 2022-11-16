@@ -16,7 +16,9 @@
         body{
             height: 100vh;
             overflow: hidden;
-            background-image: url("./assets/img/vector-musical-seamless-background-with-different-insrtuments.jpg");
+            background-image: url("./assets/img/free-music-icons-vector.png");
+            background-repeat: no-repeat;
+            background-size: cover;
         }
         #container {
             background-color: #212531;
@@ -36,6 +38,23 @@
     <div class="col-12 col-md-8 col-lg-6 d-flex justify-content-center align-items-center h-100 ">
         <div class="p-5 w-100"  id="container">
             <h2>Registration</h2>
+            <?php
+            session_start();
+            if (isset($_SESSION['err-signup'])){
+                $err = $_SESSION['err-signup'];
+                    echo "
+                            <small>
+                            <div class='alert alert-danger alert-dismissible fade show ' role='alert'>
+                              <strong>Failed !</strong> ".$err."
+                              <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                                <span aria-hidden='true'>&times;</span>
+                              </button>
+                            </div>
+                            </small>
+                            ";
+                    unset($_SESSION['err-signup']);
+                }
+            ?>
             <form action="./includes/signup.inc.php" class="needs-validation" method="post" novalidate oninput='pwd_confirm.setCustomValidity(pwd_confirm.value != pwd.value ? "Passwords do not match." : "")' >
                 <label for="validationCustom01" class="form-label">First name</label>
                 <input type="text" class="form-control bg-transparent text-light" id="validationCustom01" name="f_name" required>

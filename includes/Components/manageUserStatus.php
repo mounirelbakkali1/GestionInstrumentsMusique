@@ -1,11 +1,12 @@
 <?php
+include_once('./classes/Instrument.class.php');
 //$date = new DateTime();
 //echo date_format($date,"Y/m/d H:i:s");
-include './classes/PendingUsers.php';
+include_once('./classes/PendingUsers.class.php');
 $users = new PendingUsers();
 $arr=$users->getPendingUsers();
 ?>
-<div class="container mt-5">
+<div class="container my-5">
     <h5 class="h5 mb-5">Manage Users Status</h5>
 
     <table class="table">
@@ -27,13 +28,16 @@ $arr=$users->getPendingUsers();
                 $access;$action;
                 if($user['isApproved']==1){
                     $access="Approved" ;
-                    $action="<button class='btn btn-outline-danger' type='submit' name='deny'>Remove Acess</button>";
+                    $action="<button class='btn btn-sm btn-outline-danger text-nowrap' type='submit' name='deny'>Remove Acess</button>";
                 }else{
                     $access="Pending";
-                    $action ="<button class='btn btn-outline-success' type='submit' name='accept'>Give access</button>";
+                    $action ="<button class='btn btn-sm btn-outline-success' type='submit' name='accept'>Give access</button>";
                 }
                 echo "<tr>
-                        <td>".$user['ID']."</td>
+                        <td>
+                            <div><img class='rounded-circle' src='".$user['imgUrl']."' alt='user photo' style='width: 80px;height: 80px'></div>
+                            <div class='text-center'>E-00".$user['ID']."</div>
+                        </td>
                         <td>".$user['First_Name']."</td>
                         <td>".$user['Second_Name']."</td>
                         <td>".$user['Email']."</td>

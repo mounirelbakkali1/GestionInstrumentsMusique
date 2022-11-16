@@ -1,10 +1,12 @@
 <?php
 session_start();
+include_once('./includes/autoLoader.inc.php');
 if(!isset($_SESSION['userInfo'])) {
     echo "<script>window.location.replace('signup.php')</script>";
 }else{
     $_SESSION['username']=$_SESSION['userInfo']['First_Name']." ".$_SESSION['userInfo']['Second_Name'];
     $_SESSION['status']=$_SESSION['userInfo']['Role_ID'];
+    $_SESSION['img']=($_SESSION['userInfo']['Role_ID']==="") ? "assets/imges_uploaded/default_user_img.png" : $_SESSION['userInfo']['imgUrl'];
 }
 
 ?>
@@ -16,20 +18,18 @@ if(!isset($_SESSION['userInfo'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Stars</title>
+    <!--Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!--Google fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;1,500;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/sb-admin-2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!--Bootstrap-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="./assets/css/style.css">
+        <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
 <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient sidebar sidebar-dark accordion  md-sm-dis shadow" id="accordionSidebar" style="background-color: var(--main-color)">
-
-
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active mt-5">
             <a class="nav-link" href="index.php">
@@ -47,16 +47,16 @@ if(!isset($_SESSION['userInfo'])) {
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed border-left-1" href="#" data-toggle="collapse" data-target="#collapseTwo"
-               aria-expanded="true" aria-controls="collapseTwo">
+            <a class="nav-link collapsed border-left-1" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+               aria-expanded="false" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
                 <span>Admin</span>
             </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionSidebar">
                 <div class="py-2 collapse-inner rounded"  style="background-color: var(--main-color)">
                     <a class="collapse-item text-light font-weight-bold" href="index.php?page=manageInstruments"><?php if($_SESSION['status']==2) echo "Manage";else echo "View" ?> Instruments</a>
                     <a class="collapse-item text-light font-weight-bold" href="index.php?page=statistics">Statistics</a>
-                    <a class="collapse-item text-light font-weight-bold" href="index.php?page=addStock">Add Stock</a>
+                    <a class="collapse-item text-light font-weight-bold" href="index.php?page=makeInvoice"><?php if($_SESSION['status']==2) echo "Manage Invoices";else echo "Make Invoice" ?></a>
                 </div>
             </div>
         </li>
@@ -65,13 +65,13 @@ if(!isset($_SESSION['userInfo'])) {
 
             echo "
             <li class='nav-item'>
-            <a class='nav-link collapsed' href='#' data-toggle='collapse' data-target='#collapseUtilities'
-               aria-expanded='true' aria-controls='collapseUtilities'>
+            <a class='nav-link collapsed' href='#' data-bs-toggle='collapse' data-bs-target='#collapseUtilities'
+               aria-expanded='false' aria-controls='collapseUtilities'>
                 <i class='fas fa-fw fa-user'></i>
                 <span>Users</span>
             </a>
             <div id='collapseUtilities' class='collapse' aria-labelledby='headingUtilities'
-                 data-parent=''#accordionSidebar'>
+                 data-bs-parent='#accordionSidebar'>
                 <div class='py-2 collapse-inner rounded' style='background-color: var(--main-color)'>
                     <a class='collapse-item text-light font-weight-bold' href='index.php?page=manageStatus'>Manage Users Status</a>
                 </div>
@@ -174,13 +174,13 @@ if(!isset($_SESSION['userInfo'])) {
                <!-- Nav Item - User Information -->
                <li class="nav-item dropdown no-arrow">
                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION['username']?></span>
                        <img class="img-profile rounded-circle"
-                            src="./assets/imges_uploaded/default_user_img.png">
+                            src="<?php echo $_SESSION['img'] ?>">
                    </a>
                    <!-- Dropdown - User Information -->
-                   <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                   <div class="dropdown-menu dropdown-menu-right shadow animated-grow-in"
                         aria-labelledby="userDropdown">
                        <a class="dropdown-item" href="index.php?page=profil">
                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -218,10 +218,10 @@ if(!isset($_SESSION['userInfo'])) {
                     include_once('./includes/Components/manageInstruments.component.php');
                 }elseif ($page=="manageStatus"){
                     include_once('./includes/Components/manageUserStatus.php');
-                }elseif ($page=="addStock"){
-                    include_once('./includes/Components/addStock.component.php');
                 }elseif ($page=="profil"){
-                    include_once './includes/Components/profil.component.php';
+                    include_once('./includes/Components/profil.component.php');
+                }elseif ($page=="makeInvoice"){
+                    include_once('./includes/Components/makeInvoice.component.php');
                 }
             }else{
                 echo "<div class='mt-3 p-5 shadow' style='height: 81vh;background-color: var(--main-color)'>
@@ -295,7 +295,7 @@ if(!isset($_SESSION['userInfo'])) {
                        echo "<div class='alert alert-warning alert-dismissible fade show' role='alert'>
                               <strong>Uploading image failed !</strong>".$_SESSION['err-uplaoding_img']."
                               <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                                <span aria-hidden='true'>×</span>
+                                <span aria-hidden='true' data-bs-dismiss='modal'>×</span>
                               </button>
                             </div>";
                        unset($_SESSION['err-uplaoding_img']);
@@ -348,7 +348,7 @@ if(!isset($_SESSION['userInfo'])) {
                            </div>
 
                            <div class="modal-footer">
-                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                <button type="submit" name="addInstBtnForm" class="btn btn-primary">Add</button>
                            </div>
                        </form>
@@ -359,15 +359,15 @@ if(!isset($_SESSION['userInfo'])) {
    </main>
 </div>
 </body>
-<script src="./assets/js/sb-admin-2.min.js"></script>
-<script src="./assets/js/jquery.min.js"></script>
-<script src="./assets/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 <script src="./assets/js/scripts.js"></script>
+<script src="assets/js/sb-admin-2.js"></script>
+
 <!--DATA TABLE--->
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 
 </html>

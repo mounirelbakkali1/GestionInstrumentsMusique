@@ -3,16 +3,16 @@ include ('DataBase.class.php');
 class SignupModel extends DataBase
 {
 
-    protected function checkInputs($email,$pwd){
-        $query = "SELECT * FROM users_table WHERE EMAILS =? OR PASSWORDS =? ;";
+    protected function checkInputs($email){
+        $query = "SELECT * FROM users WHERE Email =? ;";
         $statement = $this->connect()->prepare($query);
-        if(!$statement->execute(array($email,$pwd))){
+        if(!$statement->execute(array($email))){
             $statement=null ;
-            header("location : signup.php?error=stmtfailed");
+            echo "statement failed";
             exit();
         }
         $rstOfChecking ;
-        if($statement->columnCount()>0){
+        if($statement->rowCount()>0){
             $rstOfChecking=false;
         }else{
             $rstOfChecking=true;
