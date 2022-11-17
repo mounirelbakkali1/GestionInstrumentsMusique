@@ -16,13 +16,11 @@
         body{
             height: 100vh;
             overflow: hidden;
-            background-image: url("./assets/img/free-music-icons-vector.png");
-            background-repeat: no-repeat;
-            background-size: cover;
+            background-color: #212531;
         }
         #container {
-            background-color: #212531;
-            color: #f6fdff;
+            background-color:#2e3342 ;
+            color: #f6fdff ;
         }
         input{
             color: white;
